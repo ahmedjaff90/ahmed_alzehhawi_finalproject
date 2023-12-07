@@ -207,12 +207,14 @@ const refreshPosts = async (postsJSON) => {
 };
 
 const selectMenuChangeEventHandler = async (event) => {
-  const userId = event?.target?.value || 1;
-  const postsJSON = await getUserPosts(userId);
-  const refreshPostsArray = await refreshPosts(postsJSON);
-
-  return [userId, postsJSON, refreshPostsArray];
+    if (!event) return undefined;
+    const userId = event?.target?.value || 1;
+    const postsJSON = await getUserPosts(userId);
+    if (!postsJSON) return undefined; // Add this line
+    const refreshPostsArray = await refreshPosts(postsJSON);
+    return [userId, postsJSON, refreshPostsArray];
 };
+
 
 
 const initPage = async () => {
