@@ -210,7 +210,7 @@ const selectMenuChangeEventHandler = async (event) => {
     if (!event) return undefined;
     const userId = event?.target?.value || 1;
     const postsJSON = await getUserPosts(userId);
-    if (!postsJSON) return undefined; // Add this line
+    if (!postsJSON) return undefined;
     const refreshPostsArray = await refreshPosts(postsJSON);
     return [userId, postsJSON, refreshPostsArray];
 };
