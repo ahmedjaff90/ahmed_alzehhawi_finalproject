@@ -207,23 +207,11 @@ const refreshPosts = async (postsJSON) => {
 };
 
 const selectMenuChangeEventHandler = async (event) => {
-    if (!event) return undefined;
+  const userId = event?.target?.value || 1;
+  const postsJSON = await getUserPosts(userId);
+  const refreshPostsArray = await refreshPosts(postsJSON);
 
-    const selectMenu = event.target;
-    selectMenu.disabled = true;
-
-    const userId = event.target.value || 1;
-
-    try {
-        const postsJSON = await getUserPosts(userId);
-        const refreshPostsArray = await refreshPosts(postsJSON);
-        selectMenu.disabled = false;
-        return [userId, postsJSON, refreshPostsArray];
-    } catch (error) {
-        console.error(error);
-        selectMenu.disabled = false;
-        return undefined;
-    }
+  return [userId, postsJSON, refreshPostsArray];
 };
 
 
