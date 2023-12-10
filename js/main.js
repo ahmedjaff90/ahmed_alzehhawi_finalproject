@@ -4,15 +4,16 @@ Ahmed Alzehhawi
 12/07/2023
 */
 
-
-const createElemWithText = (htmlElem = "p", textContent = "", className) => {
+//createElemWithText
+function createElemWithText(htmlElem = "p", textContent = "", className) {
     const newElement = document.createElement(htmlElem);
     newElement.textContent = textContent;
     if (className) newElement.className = className;
     return newElement;
 };
 
-const createSelectOptions = (users) => {
+//createSelectOptions
+function createSelectOptions(users) {
     if (!users) return undefined;
     const optionElements = [];
     users.forEach((user) => {
@@ -24,7 +25,9 @@ const createSelectOptions = (users) => {
     return optionElements;
 };
 
-const toggleCommentSection = (postId) => {
+
+//toggleCommentSection
+function toggleCommentSection(postId) {
     if (!postId) return undefined;
     const section = document.querySelector(`section[data-post-id='${postId}']`);
     if (!section) return null;
@@ -32,7 +35,9 @@ const toggleCommentSection = (postId) => {
     return section;
 };
 
-const toggleCommentButton = (postId) => {
+
+//toggleCommentButton
+function toggleCommentButton(postId) {
     if (!postId) return undefined;
     const button = document.querySelector(`button[data-post-id='${postId}']`);
     if (!button) return null;
@@ -40,7 +45,9 @@ const toggleCommentButton = (postId) => {
     return button;
 };
 
-const deleteChildElements = (parentElement) => {
+
+//deleteChildElements
+function deleteChildElements(parentElement) {
     const isDOM = (el) => el instanceof Element;
     if (!parentElement || !isDOM(parentElement)) return undefined;
     let child = parentElement.lastElementChild;
@@ -51,7 +58,9 @@ const deleteChildElements = (parentElement) => {
     return parentElement;
 };
 
-const addButtonListeners = () => {
+
+//addButtonListeners
+function addButtonListeners() {
     const buttons = document.querySelectorAll("main button");
     if (!buttons) return;
     buttons.forEach((button) => {
@@ -63,7 +72,9 @@ const addButtonListeners = () => {
     return buttons;
 };
 
-const removeButtonListeners = () => {
+
+//removeButtonListeners
+function removeButtonListeners() {
     const buttons = document.querySelectorAll("main button");
     if (!buttons) return;
     buttons.forEach((button) => {
@@ -75,7 +86,9 @@ const removeButtonListeners = () => {
     return buttons;
 };
 
-const createComments = (commentData) => {
+
+//createComments
+function createComments(commentData) {
     if (!commentData) return undefined;
     const frag = document.createDocumentFragment();
     commentData.forEach((comment) => {
@@ -89,7 +102,9 @@ const createComments = (commentData) => {
     return frag;
 };
 
-const populateSelectMenu = (userData) => {
+
+//populateSelectMenu
+function populateSelectMenu(userData) {
     if (!userData) return undefined;
     const selectElement = document.querySelector("#selectMenu");
     const options = createSelectOptions(userData);
@@ -99,6 +114,8 @@ const populateSelectMenu = (userData) => {
     return selectElement;
 };
 
+
+//getUsers
 const getUsers = async () => {
     try {
         const res = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -109,6 +126,8 @@ const getUsers = async () => {
     }
 };
 
+
+//getUserPosts
 const getUserPosts = async (userId) => {
     if (!userId) return undefined;
     try {
@@ -120,6 +139,8 @@ const getUserPosts = async (userId) => {
     }
 };
 
+
+//getUser
 const getUser = async (userId) => {
     if (!userId) return undefined;
     try {
@@ -133,6 +154,8 @@ const getUser = async (userId) => {
     }
 };
 
+
+//getPostComments
 const getPostComments = async (postId) => {
     if (!postId) return undefined;
     try {
@@ -144,6 +167,8 @@ const getPostComments = async (postId) => {
     }
 };
 
+
+//displayComments
 const displayComments = async (postId) => {
     if (!postId) return undefined;
     const section = document.createElement("section");
@@ -155,6 +180,8 @@ const displayComments = async (postId) => {
     return section;
 };
 
+
+//createPosts
 const createPosts = async (postsJSON) => {
     if (!postsJSON) return undefined;
     const fragment = document.createDocumentFragment();
@@ -175,6 +202,8 @@ const createPosts = async (postsJSON) => {
     return fragment;
 };
 
+
+//displayPosts
 const displayPosts = async (postsJSON) => {
     const main = document.querySelector("main");
     let element;
@@ -188,7 +217,9 @@ const displayPosts = async (postsJSON) => {
     return element;
 };
 
-const toggleComments = (event, postId) => {
+
+//toggleComments
+function toggleComments(event, postId) {
     if (!event || !postId) return undefined;
     event.target.listener = true;
     const section = toggleCommentSection(postId);
@@ -196,6 +227,8 @@ const toggleComments = (event, postId) => {
     return [section, button];
 };
 
+
+//refreshPosts
 const refreshPosts = async (postsJSON) => {
     if (!postsJSON) return undefined;
     const removeButtons = removeButtonListeners();
@@ -206,24 +239,32 @@ const refreshPosts = async (postsJSON) => {
     return [removeButtons, main, fragment, addButtons];
 };
 
+
+//selectMenuChangeEventHandler
 const selectMenuChangeEventHandler = async (event) => {
     if (!event) return undefined;
+
     const userId = event?.target?.value || 1;
     const postsJSON = await getUserPosts(userId);
+
     if (!postsJSON) return undefined;
+
     const refreshPostsArray = await refreshPosts(postsJSON);
     return [userId, postsJSON, refreshPostsArray];
 };
 
 
 
+//initPage
 const initPage = async () => {
     const usersJSON = await getUsers();
     const select = populateSelectMenu(usersJSON);
     return [usersJSON, select];
 };
 
-const initApp = () => {
+
+//initApp
+function initApp() {
     initPage();
     const select = document.getElementById("selectMenu");
     select.addEventListener(
